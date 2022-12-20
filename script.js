@@ -1,37 +1,40 @@
 let values = ''
-let operador = false
-let lastValue 
+let operadorClicked = false
 let fisrtValue = false
+
 document.addEventListener('click',(e) => {
 
   const element = e.target
+
   if(element.classList.contains('values')){
 
-    
-    if(element.innerText == '='){
-      document.querySelector('.input-value').innerText= eval(values).toFixed(2)
+    // elemento clicado nao é um numero
+    if(element.innerText == '=' && values != ''){
+      // caso o ultimo clique tenha sido em um operador será retirado da string Values
+      if(operadorClicked){
+        values = values.substring(0, values.length - 1);
+      }
+      document.querySelector('.input-value').innerText = eval(values).toFixed(2)
       fisrtValue = false
       values = ''
       return
     }
 
     if(isNaN(element.innerText)){
-      // verificando se o primeiro valor ja foi adicionado
       if(!fisrtValue){
         return
       }
-      if(operador){
+      if(operadorClicked){
         return
       }
 
-      operador =  true
+      operadorClicked =  true
     }
-
     else{
       fisrtValue = true
-      operador = false
+      operadorClicked = false
     }
-    
+
     values += element.innerText
     document.querySelector('.input-value').innerText = values
   }
